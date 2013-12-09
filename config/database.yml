@@ -1,0 +1,27 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  reconnect: false
+  database: ip_parser_development
+  pool: 5
+  username: postgres
+  password: password
+  host: localhost
+  port: 5432
+test:
+  adapter: postgresql
+  encoding: unicode
+  reconnect: false
+  database: ip_parser_test
+  pool: 5
+  username: postgres
+  password: password
+  host: localhost
+  port: 5432
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: ip_parser_production
+  pool: 5
+  username: ip_parser
+  password:

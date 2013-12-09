@@ -1,0 +1,6 @@
+<h3>Pass IPs in CSVs & get City, State & Country Info</h3>
+
+<%= form_tag('/welcome/parse_csv', :multipart => true) do %>
+  <div><%= file_field_tag "input_file" %></div>
+  <div><%= submit_tag "Submit" %></div>
+<% end %>
