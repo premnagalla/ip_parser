@@ -16,7 +16,7 @@ class WelcomeController < ApplicationController
 
     # Open a new file and write the required data fetched
     File.open(output_file_path, "w") do |csv|
-      header_attributes = ["Given country","IP Address","City","Region","Country"]
+      header_attributes = ["Given country","IP Address","City","Region","Country",'Address', 'Valid / Invalid']
       header_string = header_attributes.join(',')
       csv << header_string
       csv << "\n"
@@ -28,12 +28,23 @@ class WelcomeController < ApplicationController
           given_country = row[3]
           given_ip = row[4]
           result = Geocoder.search(given_ip)
+
           if result[0].present? && result[0].data.present?
-            op_data_string = "#{given_country},#{given_ip},#{result[0].data['city']},#{result[0].data['region_name']},#{result[0].data['country_name']},Valid IP"
+            ip_latitude = result[0].data['latitude']
+            ip_longitude = result[0].data['longitude']
+
+            # To get full address with latitude & longitude
+            full_address_search = Geocoder.search([ip_latitude, ip_longitude].join(','))
+            ip_address = nil
+            if full_address_search[0].present? && full_address_search[0].data.present?
+              ip_address = full_address_search[0].data['formatted_address']
+            end
+
+            op_data_string = "#{given_country},#{given_ip},#{result[0].data['city']},#{result[0].data['region_name']},#{result[0].data['country_name']},\"#{ip_address}\",Valid IP"
             csv << op_data_string
             csv << "\n"      
           else
-            op_data_string = "#{given_country},#{given_ip},,,,InValid IP"
+            op_data_string = "#{given_country},#{given_ip},,,,,InValid IP"
             csv << op_data_string
             csv << "\n"      
           end
